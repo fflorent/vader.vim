@@ -310,9 +310,9 @@ function! s:run(filename, cases, run_context)
         endtry
       endif
 
-      if has_key(case, 'wait')
-        call remove(self.cases, 0, cnt - 1)
-        " call vader#window#waitUntil(case.wait, self.run_cases())
+      if has_key(case, 'waituntil')
+        call remove(self.cases, 0, l:cnt - 1)
+        call vader#window#waitUntil(case.events, case.waituntil, self)
         return
       endif
 

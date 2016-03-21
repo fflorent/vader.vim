@@ -64,9 +64,20 @@ function! vader#window#open()
   let s:workbench_bfr = bufnr('')
 endfunction
 
-function! vader#window#wait(event)
-
+function! s:end_wait()
+  let context = s:wait_context
+  unlet s:wait_context
+  call context.run_cases()
 endfunction
+
+function! vader#window#waitUntil(events, waitUntil, context)
+  augroup vader_wait_until
+    autocmd!
+    let s:wait_context = a:context
+    execute 'autocmd '.a:events.' * echom "oo" | if '.join(a:waitUntil, ' and ').'| echom "ok" | call s:end_wait() | endif'
+  augroup END
+endfunction
+
 function! vader#window#execute(lines, lang_if)
   let temp = tempname()
   try

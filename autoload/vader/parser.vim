@@ -126,7 +126,7 @@ function! s:parse_vader(lines, line1)
     endif
 
     let matched = 0
-    for l in ['Before', 'After', 'Given', 'Execute', 'Expect', 'Do', 'Then']
+    for l in ['Before', 'After', 'Given', 'Execute', 'WaitUntil', 'Expect', 'Do', 'Then']
       let m = matchlist(line, '^'.l.'\%(\s\+\([^:;(]\+\)\)\?\s*\%((\(.*\))\)\?\s*\([:;]\)\s*$')
       if !empty(m)
         let newlabel = tolower(l)
@@ -136,8 +136,9 @@ function! s:parse_vader(lines, line1)
         let arg     = m[1]
         let comment = m[2]
         if !empty(arg)
-          if     l == 'Given'   | let case.type    = arg
-          elseif l == 'Execute' | let case.lang_if = arg
+          if     l == 'Given'     | let case.type    = arg
+          elseif l == 'Execute'   | let case.lang_if = arg
+          elseif l == 'WaitUntil' | let case.events  = arg
           end
         elseif l == 'Given'
           let case.type = ''
