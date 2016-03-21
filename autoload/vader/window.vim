@@ -64,6 +64,9 @@ function! vader#window#open()
   let s:workbench_bfr = bufnr('')
 endfunction
 
+function! vader#window#wait(event)
+
+endfunction
 function! vader#window#execute(lines, lang_if)
   let temp = tempname()
   try
